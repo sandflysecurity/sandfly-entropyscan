@@ -7,7 +7,7 @@ This tool can quickly find high entropy executable files which often are malicio
 # Features
 
 * Written in Golang and is portable across multiple architectures with no modifications.
-* Standalone binary requires no dependencies and can be used instanly without loading any libraries on suspect machines.
+* Standalone binary requires no dependencies and can be used instantly without loading any libraries on suspect machines.
 * Not affected by ld_preload style rootkits that are cloaking files. 
 * Generates entropy and also MD5, SHA1, SHA256 and SHA512 hash values of files.
 * Can be used in scanning scripts to find problems automatically.
