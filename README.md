@@ -112,18 +112,17 @@ are running:
 # Build
 
 * Install latest version of golang (www.golang.org)
-* Use the following command:
+* Clone the repo:
 
-`go get github.com/sandflysecurity/sandfly-entropyscan`
+`git clone https://github.com/sandflysecurity/sandfly-entropyscan.git`
 
-* Or clone the repo under your Golang src directory.
-* Go into the repo directory and build it with instructions below.
-
-## Basic Build
-
-On the system architecture you want to compile for, copy the sources under your Golang src directory and run:
+* Go into the repo directory and build it:
 
 `go build`
+
+* Run the binary with your options:
+
+`./sandfly-entropyscan`
 
 ## Build Scripts
 
