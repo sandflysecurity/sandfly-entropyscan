@@ -1,4 +1,4 @@
-// Sandfly filescan file utilities to calculate entropy, crypto hashes, etc
+// Sandfly entropyscan file utilities to calculate entropy, crypto hashes, etc
 package fileutils
 
 /*
@@ -14,8 +14,8 @@ find out more about how it works at: https://www.sandflysecurity.com
 
 MIT License
 
-Copyright (c) 2019 Sandfly Security Ltd.
-https://www.sandflysecurity.com
+Copyright (c) 2019-2022 Sandfly Security Ltd.
+https://www.sandlfysecurity.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
@@ -31,9 +31,8 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-Version: 1.0
-Date: 2019-11-23
-Author: Craig H. Rowland  @CraigHRowland  @SandflySecurity
+Version: 1.1
+Author: @SandflySecurity
 */
 
 import (

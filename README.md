@@ -1,14 +1,16 @@
-# What is sandfly-filescan?
+# What is sandfly-entropyscan?
 
-`sandfly-filescan` is a utility to quickly scan files and report on their entropy (measure of randomness) and if they 
-are a Linux/Unix ELF type executable. Some malware for Linux is packed or encrypted and shows very high entropy. 
-This tool can quickly find high entropy executable files which often are malicious.
+`sandfly-entropyscan` is a utility to quickly scan files or running processes and report on their entropy (measure 
+of randomness) and if they are a Linux/Unix ELF type executable. Some malware for Linux is packed or encrypted and 
+shows very high entropy. This tool can quickly find high entropy executable files and processes which often are 
+malicious.
 
 # Features
 
 * Written in Golang and is portable across multiple architectures with no modifications.
-* Standalone binary requires no dependencies and can be used instantly without loading any libraries on suspect machines.
+* Standalone binary requires no dependencies and can be used instanly without loading any libraries on suspect machines.
 * Not affected by ld_preload style rootkits that are cloaking files. 
+* Built-in PID busting to find hidden/cloaked processes from certain types of Loadable Kernel Module (LKM) rootkits.
 * Generates entropy and also MD5, SHA1, SHA256 and SHA512 hash values of files.
 * Can be used in scanning scripts to find problems automatically.
 * Can be used by incident responders to quickly scan and zero in on potential malware on a Linux host. 
@@ -25,23 +27,29 @@ way to find programs that could be malicious just by having these two attributes
 
 # How Do I Use This?
 
-Usage of `sandfly-filescan`:
+Usage of `sandfly-entropyscan`:
 
 `  -csv`
     	output results in CSV format (filename, path, entropy, elf_file [true|false], MD5, SHA1, SHA256, SHA512)
+
+`  -delim`
+		change the default delimiter for CSV files of "," to one of your choosing ("|", etc.)
     	
 `  -dir string`
     	directory name to analyze
     	
+`  -file string`
+    	full path to a single file to analyze
+
+`  -proc`
+		check running processes (defaults to ELF only check)
+
 `  -elf`
     	only check ELF executables
     	
 `  -entropy float`
-    	show any file with entropy greater than or equal to this value (0.0 - 8.0 max 8.0)
+    	show any file/process with entropy greater than or equal to this value (0.0 min - 8.0 max, defaults 0 to show all files)
     	
-`  -file string`
-    	full path to a single file to analyze
-
 `   -version`
     	show version and exit
 
@@ -49,24 +57,28 @@ Usage of `sandfly-filescan`:
 
 Search for any file that is executable under /tmp:
 
-`sandfly-filescan -dir /tmp -elf`
+`sandfly-entropyscan -dir /tmp -elf`
 
 Search for high entropy (7.7 and higher) executables (often packed or encrypted) under /var/www:
 
-`sandfly-filescan -dir /var/www -elf -entropy 7.7`
+`sandfly-entropyscan -dir /var/www -elf -entropy 7.7`
+
+Search for any process with an entropy higher than 7.7 indicating it is likely packed or encrypted:
+
+`sandfly-entropyscan -proc -entropy 7.7`
 
 Generate entropy and cryptographic hash values of all files under /bin and output to CSV format (for instance to save and compare hashes):
 
-`sandfly-filescan -dir /bin -csv`
+`sandfly-entropyscan -dir /bin -csv`
 
 Scan a directory for all files (ELF or not) with entropy greater than 7.7:
 (potentially large list of files that are compressed, png, jpg, object files, etc.)
 
-`sandfly-filescan -dir /path/to/dir -entropy 7.7`
+`sandfly-entropyscan -dir /path/to/dir -entropy 7.7`
 
 Quickly check a file and generate entropy, cryptographic hashes and show if it is executable:
 
-`sandfly-filescan -file /dev/shm/suspicious_file`
+`sandfly-entropyscan -file /dev/shm/suspicious_file`
 
 # Use Cases
 
@@ -77,23 +89,28 @@ file that is somewhere strange (e.g. hanging out in /tmp or under a user's HTML 
 Did a high entropy binary show up under the system /var/www directory? Could be someone put a malware dropper
 on your website:
 
-`sandfly-filescan -dir /var/www -elf -entropy 7.7`
+`sandfly-entropyscan -dir /var/www -elf -entropy 7.7`
 
 Setup a cron task to scan your /tmp, /var/tmp, and /dev/shm directories for any kind of executable file whether it's 
 high entropy or not. Executable files under tmp directories can frequently be a malware dropper.
 
-`sandfly-filescan -dir /tmp -elf`
+`sandfly-entropyscan -dir /tmp -elf`
 
-`sandfly-filescan -dir /var/tmp -elf`
+`sandfly-entropyscan -dir /var/tmp -elf`
 
-`sandfly-filescan -dir /dev/shm -elf`
+`sandfly-entropyscan -dir /dev/shm -elf`
+
+Setup another cron or automated security sweep to spot check your systems for highly compressed or encrypted binaries that 
+are running:
+
+`sandfly-entropyscan -proc -entropy 7.7`
 
 # Build
 
 * Install latest version of golang (www.golang.org)
 * Use the following command:
 
-`go get github.com/sandflysecurity/sandfly-filescan`
+`go get github.com/sandflysecurity/sandfly-entropyscan`
 
 * Or clone the repo under your Golang src directory.
 * Go into the repo directory and build it with instructions below.
@@ -102,37 +119,14 @@ high entropy or not. Executable files under tmp directories can frequently be a 
 
 On the system architecture you want to compile for, copy the sources under your Golang src directory and run:
 
-`go build sandfly-filescan.go`
+`go build`
 
 ## Build Scripts
 
 There are a some basic build scripts that build for various platforms. You can use these to build or modify to suit.
 For Incident Responders, it might be useful to keep pre-compiled binaries ready to go on your investigation box.
 
-`build_linux.sh` - Build for AMD/Intel/64bit Linux
-
-`build_linux_386.sh` - Build for 386/32bit Linux
-
-`build_generic.sh` - Builds a binary for whatever OS you're running on when you run it. 
-
-## Linux AMD/Intel64 Command Line Build
-
-To build for basic Linux, go into the files under the Golang src directory and build:
-
-`env GOOS=linux GOARCH=amd64 go build -o sandfly-filescan -ldflags="-s -w" sandfly-filescan
-`
-
-Or for generic 386:
-
-`env GOOS=linux GOARCH=386 go build -o sandfly-filescan -ldflags="-s -w" sandfly-filescan`
-
-## Other Platforms Like OSX
-
-The binary will compile and run on platforms like OSX. You can use it to crawl a directory and it will flag ELF
-files, etc. just like on Linux. To get a list of available operating systems you can build for with Go, use the 
-following command and change the GOOS and GOARCH fields in the build script.
-
-`go tool dist list`
+`build.sh` - Build for current OS you're running on when you execute it.
 
 # ELF Detection
 
@@ -173,7 +167,7 @@ will drastically reduce search times by only processing executable file types.
 
 # Incident Response 
 
-For incident responders, running `sandfly-filescan` against the entire top-level "/" directory may be a good idea just 
+For incident responders, running `sandfly-entropyscan` against the entire top-level "/" directory may be a good idea just 
 to quickly get a list of likely packed candidates to investigate. This will spike CPU and disk I/O. However, you probably 
 don't care at that point since the box has been mining cryptocurrency for 598 hours anyway by the time the admins 
 noticed. 
@@ -183,7 +177,7 @@ Again, use the ELF flag to get to the likely problem candidate executables and i
 # Testing
 
 There is a script called `scripts/testfiles.sh` that will make two files. One will be full of random data and one will not be
-random at all. When you run the script it will make the files and run `sandfly-filescan` in executable detection mode.
+random at all. When you run the script it will make the files and run `sandfly-entropyscan` in executable detection mode.
 You should see two files. One with very high entropy (at or near 8.0) and one full of non-random data that should
 be at 0.00 for low entropy. Example:
 
@@ -202,10 +196,10 @@ You can also load up the `upx` utility and compress an executable and see what v
 # Agentless Linux Security
 
 Sandfly Security produces an agentless intrusion detection and incident response platform for Linux.  Automated 
-entropy checks are just one of hundreds of things we search for to find intruders without loading any software 
+entropy checks are just one of thousands of things we search for to find intruders without loading any software 
 on your Linux endpoints.
 
-Learn more below:
+Get a free license and learn more below:
 
 https://www.sandflysecurity.com
 @SandflySecurity
