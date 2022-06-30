@@ -109,6 +109,9 @@ func main() {
 	}
 
 	if procOnly {
+		if os.Geteuid() != 0 {
+			log.Fatalf("process checking option requires UID/EUID 0 (root) to run")
+		}
 		// This will do a PID bust of all PID range to help detect hidden PIDs.
 		pidPaths, err := genPIDExePaths()
 		if err != nil {
