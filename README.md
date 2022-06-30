@@ -9,7 +9,7 @@ malicious.
 
 * Written in Golang and is portable across multiple architectures with no modifications.
 * Standalone binary requires no dependencies and can be used instanly without loading any libraries on suspect machines.
-* Not affected by ld_preload style rootkits that are cloaking files. 
+* Not affected by LD_PRELOAD style rootkits that are cloaking files. 
 * Built-in PID busting to find hidden/cloaked processes from certain types of Loadable Kernel Module (LKM) rootkits.
 * Generates entropy and also MD5, SHA1, SHA256 and SHA512 hash values of files.
 * Can be used in scanning scripts to find problems automatically.
@@ -62,6 +62,10 @@ Search for any file that is executable under /tmp:
 Search for high entropy (7.7 and higher) executables (often packed or encrypted) under /var/www:
 
 `sandfly-entropyscan -dir /var/www -elf -entropy 7.7`
+
+Generates entropy and cryptographic hashes of all running processes in CSV format:
+
+`sandfly-entropyscan -proc -csv`
 
 Search for any process with an entropy higher than 7.7 indicating it is likely packed or encrypted:
 
