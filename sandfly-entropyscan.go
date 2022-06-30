@@ -2,12 +2,12 @@
 package main
 
 /*
-This utility will help find packed or encrypted files on a Linux system by calculating the entropy to see how
-random they are. Packed or encrypted malware often appears to be a very random executable file and this utility
-can help identify potential problems.
+This utility will help find packed or encrypted files or processes on a Linux system by calculating the entropy
+to see how random they are. Packed or encrypted malware often appears to be a very random executable file and this
+utility can help identify potential intrusions.
 
 You can calculate entropy on all files, or limit the search just to Linux ELF executables that have an entropy of
-your threshold.
+your threshold. Linux processes can be scanned as well automatically.
 
 Sandfly Security produces an agentless intrusion detection and incident response platform for Linux. You can
 find out more about how it works at: https://www.sandflysecurity.com
