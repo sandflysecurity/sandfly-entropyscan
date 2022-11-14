@@ -1,3 +1,3 @@
-module gihub.com/sandflysecurity/sandfly-entropyscan
+module github.com/sandflysecurity/sandfly-entropyscan
 
-go 1.18
+go 1.19

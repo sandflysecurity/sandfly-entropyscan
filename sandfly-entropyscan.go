@@ -9,13 +9,13 @@ utility can help identify potential intrusions.
 You can calculate entropy on all files, or limit the search just to Linux ELF executables that have an entropy of
 your threshold. Linux processes can be scanned as well automatically.
 
-Sandfly Security produces an agentless intrusion detection and incident response platform for Linux. You can
+Sandfly Security produces an agentless endpoint detection and incident response platform (EDR) for Linux. You can
 find out more about how it works at: https://www.sandflysecurity.com
 
 MIT License
 
 Copyright (c) 2019-2022 Sandfly Security Ltd.
-https://www.sandlfysecurity.com
+https://www.sandflysecurity.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
@@ -31,7 +31,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-Version: 1.1
+Version: 1.1.1
 Author: @SandflySecurity
 */
 
@@ -44,12 +44,12 @@ import (
 	"path/filepath"
 	"strconv"
 
-	"gihub.com/sandflysecurity/sandfly-entropyscan/fileutils"
+	"github.com/sandflysecurity/sandfly-entropyscan/fileutils"
 )
 
 const (
 	// constVersion Version
-	constVersion = "1.1"
+	constVersion = "1.1.1"
 	// constProcDir default /proc dir for processes.
 	constProcDir = "/proc"
 	// constDelimeterDefault default delimiter for CSV output.

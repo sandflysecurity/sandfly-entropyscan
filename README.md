@@ -133,7 +133,7 @@ For Incident Responders, it might be useful to keep pre-compiled binaries ready 
 
 # ELF Detection
 
-We use a  simple method for seeing if a file may be an executable ELF type. We can spot ELF format files for 
+We use a simple method for seeing if a file may be an executable ELF type. We can spot ELF format files for 
 multiple platforms. Even if malware has Intel/AMD, MIPS and Arm dropper binaries we will still be able to spot all of 
 them.
 
@@ -198,7 +198,7 @@ You can also load up the `upx` utility and compress an executable and see what v
 
 # Agentless Linux Security
 
-Sandfly Security produces an agentless intrusion detection and incident response platform for Linux.  Automated 
+Sandfly Security produces an agentless endpoint detection and incident response platform (EDR) for Linux. Automated
 entropy checks are just one of thousands of things we search for to find intruders without loading any software 
 on your Linux endpoints.
 
